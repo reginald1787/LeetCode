@@ -17,7 +17,6 @@
 #include <algorithm>
 
 
-
 using namespace std;
 
 class Solution{
@@ -52,17 +51,15 @@ public:
 
     //Three Sum
     vector<vector<int>>threeSum(vector<int>&num);
-
-    int maxSubArray(int A[], int n);
-    int searchInsert(int A[], int n, int target);
-    int maxProfit_II(vector<int>&prices);
-    int maxProfit_I(vector<int> &prices);
-    int maxProfit(vector<int>&prices);
-    vector<vector<int>>threeSum_brute_force(vector<int>&num);
-    void threeSum(vector<int>&num, int target, vector<vector<int>> &res,int currnum);
-    int threeSumClosest_on3(vector<int> &num, int target);
+    
+    //Three Sum Closet
     int threeSumClosest(vector<int> &num, int target);
+
+    //Four Sum
     vector<vector<int> > fourSum(vector<int> &num, int target);
+  
+    
+    
     //bool sudoku_valid(char [][9]);
     void solveSudoku(char[][9]);
 
