@@ -225,330 +225,81 @@ vector<vector<int>> Solution::threeSum(vector<int>&num){
 };
 
 
-
-int Solution::singlenumber(int A[],int n){
-    int xor_val = A[0];
-    for (int i=1; i<n; ++i) {
-        xor_val=xor_val^A[i];
-    }
-    return  xor_val;
-}
-
-int Solution:: singleNumber(int A[], int n) {
-    int xor_val = A[0];
-    int num = A[0];
-    for (int i=1; i<n; ++i) {
-        xor_val=xor_val^A[i];
-    }
-    return  xor_val;
+int Solution:: threeSumClosest(vector<int> &num, int target) {
+    int result = 0;
+    int min_gap = INT_MAX;
     
-}
-
-
-int Solution::boolconsecute(vector<int>&num){
-    int max=num[0];
-    int min=num[0];
-    for (vector<int>::iterator iter=num.begin(); iter!=num.end(); ++iter) {
-        if(*iter>max){max=*iter;}
-        if(*iter<min){min=*iter;}
-    }
-    vector<bool> count(max+1-min,0);
-    for (int i=0; i<num.size(); ++i) {
-        count[num[i]-min]=1;
-    }
-    int maxconsecute=1;
-    int currconsecute=1;
-    for(int i=0;i<count.size()-1;++i){
-        if(count[i] and count[i+1]){currconsecute++;}
-        else{
-            if(currconsecute>maxconsecute){maxconsecute=currconsecute;}
-            currconsecute=1;
-        }
-    }
-    return maxconsecute;
-
-}
-
-
-vector<int> Solution::countingsort(vector<int>&num){
-    int max=num[0];
-    int min=num[0];
-    for (vector<int>::iterator iter=num.begin(); iter!=num.end(); ++iter) {
-        if(*iter>max){max=*iter;}
-        if(*iter<min){min=*iter;}
-    }
-    vector<int> count(max+1-min,0);
-    for (int i=0; i<num.size(); ++i) {
-        count[num[i]-min]+=1;
-    }
-    for(int i=1;i<max+1-min;++i){
-        count[i]=count[i-1]+count[i];
-    }
-    vector<int> new_num(num.size(),0);
-    for(int i=(num.size()-1);i>=0;--i){
-        new_num[count[num[i]-min]-1]=num[i];
-        count[num[i]-min]--;
-    }
-    return new_num;
-
-}
-
-int Solution::removeElement(int A[], int n, int elem) {
-    int i=0;
-    int j=0;
-    while (i<n){
-        if (A[i]!=elem){
-            A[j]=A[i];
-            j++;
-        }
-        i++;
-    }
-    return j;
-
-}
-
-int Solution::maxSubArray(int A[], int n) {
-    // Start typing your C/C++ solution below
-    // DO NOT write int main() function
-    int m=A[0];
-    for (int i=0; i<n; ++i) {
-        if(A[i]>m){m=A[i];}
-    }
-    int sum=0;
-    for (int i=0;i<n;i++){
-        sum = sum>=0?(sum+A[i]):A[i];
-        m=sum>m?sum:m;
-    }
-    return m;
-}
-
-int Solution:: searchInsert(int A[], int n, int target) {
-    int i=0;
-    while (i<n) {
-        if(A[i]>=target){return i;}
-        i++;
-    }
-    if(i==n){return i;}
-    return i;
-}
-
-int Solution:: maxProfit_I(vector<int> &prices)
-{
-    int profit=0;
-    if (!prices.empty())
-    {
-        
-        int shares = 0;//not have any
-        int i=0;
-        while (i<prices.size())
-        {
-            if (i+1<prices.size()) {
-                int cur_price = prices[i];
-                int next_price = prices[i+1];
-                if (next_price<cur_price)
-                {
-                    if (shares){
-                        //sellprice = cur_price;
-                        profit+=cur_price*shares;
-                        shares=0;
-                    }
-                    else{i++;continue;}
-                }
-                else{
-                    if (shares) {i++;continue;}
-                    else{profit-=cur_price;shares++;}
-                }
-            }
-            else{if(shares){profit+=prices[i]*shares;}}
-            i++;
-        }
-    }
-    return profit;
-}
-
-int Solution:: maxProfit_II(vector<int>&prices){
-    int profit=0;
-    int total_profit=0;
-    if (!prices.empty()){
-        if(prices.size()<2){return total_profit;}
-        int curr_profit =0;
-        int curr_total_profit=0;
-        int i=0;
-        //int holds=0;
-        while (i<prices.size()) {
-            if (i+1<prices.size()) {
-                int j=i+1;
-                while (j<prices.size() and prices[i]<prices[j]) {
-                    curr_profit = prices[j]-prices[i];
-                    if(curr_profit>profit){
-                        vector<int> temp(prices.begin()+j,prices.end());
-                        curr_total_profit = curr_profit+maxProfit(temp);
-                        if(curr_total_profit>total_profit){profit=curr_profit;total_profit=curr_total_profit;}
-                    }
-                    j++;
-                }
-                if(j==prices.size()){i++;continue;}
-                i=j;
-            }
-            else{break;}
-        }
-    }
-    
-    return total_profit;
-}
-
-
-int Solution::maxProfit(vector<int> &prices){
-    int profit=0;
-    if (!prices.empty()){
-        int curr_profit =0;
-        int i=0;
-        while (i<prices.size()) {
-            if (i+1<prices.size()) {
-                int j=i+1;
-                while (j<prices.size() and prices[i]<prices[j]) {
-                    curr_profit = prices[j]-prices[i];
-                    if(curr_profit>profit){profit=curr_profit;}
-                    j++;
-                }
-                if(j==prices.size()){i++;continue;}
-                i=j;
-            }
-            else{break;}
-        }
-    }
-    return profit;
-}
-
-
-
-vector<vector<int>> Solution::threeSum_brute_force(vector<int>&num){
-    vector<vector<int>> results;
     sort(num.begin(),num.end());
-    int first,second,third;
-    vector<int> previous;
-    for(int i=0;i<num.size();++i){
-        if(i>0 and num[i-1]==num[i]){continue;}
-        if(num[i]>0){break;}
-        first = num[i];
-        for (int j=i+1; j<num.size(); ++j) {
-            if(j>i+1 and num[j-1]==num[j]){continue;}
-            second = num[j];
-            for (int k=j+1; k<num.size(); ++k) {
-                third = num[k];
-                if (first+second+third==0) {
-                    int newpair[] ={first,second,third};
-                    vector<int> newvec(newpair,newpair+3);
-                    if(results.empty()){results.push_back(newvec);previous = newvec;}
-                    else if(newvec!=previous){
-                        results.push_back(newvec);
-                        previous=newvec;
-                        //cout<<i<<'\t'<<j<<'\t'<<k<<endl;
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    return results;
-}
-
-
-int Solution::threeSumClosest_on3(vector<int>&num, int target){
-    sort(num.begin(), num.end());
-    int closet = num[0]+num[1]+num[2];
-    int error = abs(closet-target);
-    for (int i=0;i<num.size(); ++i) {
-        if (num[i]>target) {break;}
-        for (int j=i+1; j<num.size(); ++j) {
-            if(num[i]+num[j]>target){break;}
-            for (int k=j+1; k<num.size(); ++k) {
-                int curr = num[i]+num[j]+num[k];
-                if(abs(curr-target)<error){error=abs(curr-target);closet=curr;}
-                if (curr>target) {
-                    break;
-                }
-            }
-        }
-    }
-    return closet;
-}
-
-int Solution::threeSumClosest(vector<int> &num, int target){
-    sort(num.begin(), num.end());
-    int closet = num[0]+num[1]+num[2];
-    int error = abs(closet-target);
-    int k = num.size()-1;
-    for(int i=0;i<num.size();++i){
-        int j=i+1;
-        while (j<num.size() and j<k) {
-            int curr = num[i]+num[j]+num[k];
-            if(abs(curr-target)<error){error=abs(curr-target);closet=curr;}
-            if(curr>target){k--;}
-            else if(curr<target){j++;}
-            else{return closet;}
-        }
-    }
-    return closet;
-}
-
-void Solution::threeSum(vector<int> &num, int target,vector<vector<int>> &res, int currnum) {
-    // Start typing your C/C++ solution below
-    // DO NOT write int main() function
-    vector<int> res_m(4);
-    //vector< vector<int> > res;
-    vector<int>::iterator it1,it2,it3,iend;
     
-    //sort(num.begin(),num.end());
-    if(num.size()>=3){
-        iend = num.end();
-        it1 = num.begin();
-        bool f1 = false;
-        for ( ;it1!=iend-2;++it1){
-            if(f1 && *it1==*(it1-1)) {continue;}
-            f1 = true;
-            bool f2 = false;
-            bool f3 = false;
-            it3 = iend-1;
-            it2 = it1+1;
-            while (it2!=it3){
-                
-                if(f3 && *it3==*(it3+1)) { it3 = it3 -1 ;continue;}
-                if(f2 && *it2==*(it2-1)) { it2 = it2 +1 ;continue;}
-                
-                if (*it1 + *it2 + *it3==target){
-                    res_m.at(1)=*it1;
-                    res_m.at(2)=*it2;
-                    res_m.at(3)=*it3;
-                    res_m.at(0)=currnum;
-                    res.push_back(res_m);
-                }
-                if (*it1 + *it2 + *it3 >target){
-                    it3=it3-1;
-                    f3 = true;
-                    
-                }else{
-                    it2=it2+1;
-                    f2 = true;
-                }
-                
+    for (auto a = num.begin(); a != prev(num.end(),2); ++a) {
+        auto b = next(a);
+        auto c = prev(num.end());
+        
+        while (b < c) {
+            int sum = *a + *b + *c;
+            int gap = abs(sum - target);
+            
+            if (gap < min_gap){
+                result = sum;
+                min_gap = gap;
             }
             
+            if (sum < target) {
+                ++b;
+            }
+            else{
+                --c;
+            }
         }
     }
-    //return res;
-}
+    
+    return result;
+    
+};
 
-vector<vector<int>> Solution::fourSum(vector<int> &num, int target){
-    sort(num.begin(),num.end());
+
+
+
+vector<vector<int> > Solution:: fourSum(vector<int> &num, int target) {
     vector<vector<int>> results;
-    for (vector<int>::iterator iter=num.begin(); iter!=num.end(); ++iter) {
-        if(iter!=num.begin() and *(iter-1)==*iter){continue;}
-        vector<int>newnum(iter+1,num.end());
-        threeSum(newnum, target-*iter, results,*iter);
+    
+    sort(num.begin(),num.end());
+    auto last = num.end();
+    for (auto a = num.begin(); a < prev(last, 3); ++a) {
+        for (auto b = next(a); b < prev(last, 2); ++b) {
+            auto c = next(b);
+            auto d = prev(last);
+            
+            while (c < d) {
+                if (*a + *b + *c + *d < target ) {
+                    ++c;
+                }
+                else if (*a + *b + *c + *d > target){
+                    --d;
+                }
+                else{
+                    results.push_back({*a,*b,*c,*d});
+                }
+            }
+        }
+        
     }
+    
+    sort(results.begin(),results.end());
+    results.erase(unique(results.begin(), results.end()), results.end());
     return results;
-}
+
+};
+
+
+
+
+
+
+
+
+
+
 
 void sudoku_print(map<pair<int, int>, unordered_set<char>>::iterator iter){
     
