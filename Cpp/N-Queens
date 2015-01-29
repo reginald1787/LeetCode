@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<string> > solveNQueens(int n) ;
+};
+
+bool valid(unordered_map<int, int> &col, int i, int j){
+    if(col.find(j)!=col.end()) return false;
+    for(auto it = col.begin(); it!=col.end();it++){
+        if((abs(it->first-j) == abs(it->second-i))){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+void dfs(vector<vector<string>> &totalres, vector<string> &res, unordered_map<int, int> &col, int row, int n){
+    
+    if(row>=n) {
+        if(col.size()==n){
+            totalres.push_back(res);
+        }
+        return;
+    }
+    for(int j=0;j<n;j++){
+        if(valid(col, row, j)){
+            res[row][j] = 'Q';
+            col[j] = row;
+            dfs(totalres, res, col, row+1, n);
+            col.erase(j);
+            res[row][j] = '.';
+        }
+    }
+}
+
+vector<vector<string> > Solution::  solveNQueens(int n){
+    vector<vector<string>> res;
+    vector<string> curpath (n, string (n, '.'));
+    unordered_map<int,int> col;
+    dfs(res,curpath, col, 0, n);
+    return res;
+}
+
