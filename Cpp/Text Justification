@@ -1,0 +1,65 @@
+class Solution {
+public:
+    vector<string> fullJustify(vector<string> &words, int L);
+};
+
+
+string trans(vector<string> &words, int L, int i, int word_num, int char_num){
+   
+    int total_num = L-char_num;
+    string line = words[i];
+    int j=1;
+    while(j<word_num){
+        line = words[i-j] + string(total_num/(word_num-j), ' ') + line;
+        total_num -= total_num/(word_num-j);
+        j++;
+        
+    }
+    return line;
+}
+
+vector<string> Solution:: fullJustify(vector<string> &words, int L) {
+
+    int i=0;
+    vector<string> s;
+    
+    while(i<words.size()){
+        int char_num = 0;
+        int word_num = 0;
+        while(i<words.size() && (char_num+word_num-1)<=L){
+            char_num+=words[i].size();
+            word_num++;
+            i++;
+        }
+        
+        if (i>=words.size() && (char_num+word_num-1)<=L) {
+            string line;
+            for(int j = 0; j<word_num-1;j++){
+                line+=words[i-word_num+j] + " ";
+            }
+            line += words[i-1]+string(L-char_num-word_num+1, ' ');
+            s.push_back(line);
+            return s;
+        }
+
+        
+        
+        char_num -= words[i-1].size();
+        word_num--;
+        i-=2; //current position
+        
+        if(word_num==1){
+            string line = words[i]+string(L-char_num, ' ');
+            s.push_back(line);
+        }
+        else{
+            string line = trans(words, L, i, word_num, char_num);
+            s.push_back(line);
+        }
+        i++;
+    }
+    
+    return s;
+
+};
+
