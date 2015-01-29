@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char> > &matrix) ;
+    int largestRectangleArea(vector<int> &h) ;
+
+};
+
+int Solution:: largestRectangleArea(vector<int> &h) {
+    stack<int> S;
+    h.push_back(0);
+    int sum = 0;
+    for (int i = 0; i < h.size(); i++) {
+        if (S.empty() || h[i] > h[S.top()]) S.push(i);
+        else {
+            int tmp = S.top();
+            S.pop();
+            sum = max(sum, h[tmp]*(S.empty()? i : i-S.top()-1));
+            i--;
+        }
+    }
+    return sum;
+}
+
+int Solution:: maximalRectangle(vector<vector<char> > &matrix) {
+    if(matrix.size() == 0 || matrix[0].size() == 0)
+        return 0;
+    int maxArea = 0;
+    vector<int> temp(matrix[0].size(), 0);
+    for(int i = 0; i < matrix.size(); i++){
+        for(int j = 0; j < matrix[0].size(); j++){ 
+            if(matrix[i][j] == '1')
+                temp[j]++;
+            else
+                temp[j] = 0; 
+        }
+        int ret = largestRectangleArea(temp);
+        maxArea = ret > maxArea ? ret : maxArea;
+    }
+    return maxArea;
+}
