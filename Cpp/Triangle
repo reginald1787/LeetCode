@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minimumTotal(vector<vector<int> > &triangle) ;
+};
+
+// int Solution:: minimumTotal(vector<vector<int> > &triangle){
+//     int m = triangle.size();
+//     vector<vector<int>> f (m, vector<int> (m, 0));
+    
+//     for(int j=0;j<m;j++){
+//         f[m-1][j] = triangle[m-1][j];
+//     }
+//     for(int i=m-2;i>=0;i--){
+//         for(int j=i;j>=0;j--){
+//             f[i][j] = min(f[i+1][j],f[i+1][j+1])+triangle[i][j];
+//         }
+//     }
+//     return f[0][0];
+// }
+
+int Solution:: minimumTotal(vector<vector<int> > &triangle){
+    int m = triangle.size();
+    if(m<1) return 0;
+    
+    for(int i=m-2;i>=0;i--){
+        for(int j=i;j>=0;j--){
+            triangle[i][j] += min(triangle[i+1][j],triangle[i+1][j+1]);
+        }
+    }
+    return triangle[0][0];
+}
