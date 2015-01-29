@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string> &dict) {
+        vector<vector<bool>> f (s.size(), vector<bool> (s.size(), false));
+        for(int i=0;i<s.size();i++){
+            for(int j=i;j<s.size();j++){
+                f[i][j] = dict.find(s.substr(i,j-i+1))!=dict.end();
+            }
+        }
+        
+        for(int i=s.size()-1;i>=0;i--){
+            for(int j=i+1;j<s.size();j++){
+                for(int k=i;k<j;k++){
+                    if(f[i][k] && f[k+1][j]){
+                        f[i][j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return f[0][s.size()-1];
+        
+    }
+};
