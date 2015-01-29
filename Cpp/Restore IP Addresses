@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s);
+};
+
+
+void dfs(vector<string> & results, string & s, string  path, int level, int index){
+    if(level==3){
+        if((s.size()-index>3) || (s.size()-index<1)) return;
+        string digit = s.substr(index,s.size()-index);
+        if(stoi(digit)>255) return;
+        if(digit[0]=='0' & digit.size()>1) return;
+        path+=digit;
+        results.push_back(path);
+        return;
+    }
+    
+
+    for(int i=1;i<4;i++){
+        if(i+index>s.size()) return;
+        string digit = s.substr(index,i);
+        if(stoi(digit)>255) return;
+        if(i==1 && digit[i-1]=='0'){
+            dfs(results,s,path+digit+".",level+1,index+i);
+            break;
+        }
+        dfs(results,s,path+digit+".",level+1,index+i);
+    }
+}
+
+vector<string> Solution:: restoreIpAddresses(string s){
+    
+    vector<string> results;
+    dfs(results, s, "", 0, 0);
+    return results;
+}
