@@ -1,0 +1,44 @@
+class LRUCache{
+    
+private:
+
+    struct node {
+        int key;
+        int value;
+        node(int k, int v): key(k), value(v){}
+    };
+    
+    list<node> LRUlist;
+    unordered_map<int,list<node>::iterator> dict;
+    int capacity;
+    
+public:
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+    }
+    
+    int get(int key) {
+        if(dict.find(key)==dict.end()){
+            return -1;
+        }
+        LRUlist.splice(LRUlist.begin(), LRUlist, dict[key]);
+        dict[key] = LRUlist.begin();
+        return dict[key]->value;
+    }
+    
+    void set(int key, int val) {
+        if(dict.find(key)==dict.end()){
+            if(LRUlist.size()==capacity){
+                dict.erase(LRUlist.back().key);
+                LRUlist.pop_back();
+            }
+            LRUlist.push_front(node(key,val));
+            dict[key] = LRUlist.begin();
+        }
+        else{
+            dict[key]->value = val;
+            LRUlist.splice(LRUlist.begin(), LRUlist, dict[key]);
+            dict[key] = LRUlist.begin();
+        }
+    }
+};
