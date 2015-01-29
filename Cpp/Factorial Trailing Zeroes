@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        
+        int sum=0;
+        long divi=5;
+        
+        while(n/divi>0){
+            sum+=n/divi;
+            divi*=5;
+        }
+        
+        return sum;
+    }
+};
