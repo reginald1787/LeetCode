@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void nextPermutation(vector<int> &num) {
+        //find the pivot
+        auto pivot = next(num.rbegin());
+        while(pivot!=num.rend() && *pivot >= *prev(pivot)){
+            pivot++;
+        }
+        
+        if(pivot==num.rend()){
+            reverse(num.rbegin(),num.rend());
+            return;
+        }
+        
+        auto change = num.rbegin();
+        while(*change<=*pivot){
+            change++;
+        }
+        swap(*pivot,*change);
+        reverse(num.rbegin(),pivot);
+        return;
+        
+    }
+};
