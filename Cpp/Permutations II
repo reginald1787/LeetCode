@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<int> > permuteUnique(vector<int> &num);
+};
+
+bool nextPermutation(vector<int> &num) {
+
+    //find the pivot
+    auto pivot = next(num.rbegin());
+    while(pivot!=num.rend() && *pivot >= *prev(pivot)){
+        //cout<<*pivot<<endl;
+        pivot++;
+    }
+    
+    if(pivot==num.rend()){
+        reverse(num.rbegin(),num.rend());
+        return false;
+    }
+    
+    auto change = num.rbegin();
+    while(change!=num.rend() && *change<=*pivot){
+        change++;
+    }
+    swap(*pivot,*change);
+    reverse(num.rbegin(),pivot);
+    return true;
+    
+}
+
+vector<vector<int> > Solution:: permuteUnique(vector<int> &num){
+    vector<vector<int>> results;
+    if(num.empty()) return results;
+    sort(num.begin(),num.end());
+    do{
+        results.push_back(num);
+    }while(nextPermutation(num));
+    
+    return results;
+}
+
