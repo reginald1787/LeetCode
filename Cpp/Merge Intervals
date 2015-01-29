@@ -1,0 +1,48 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+    vector<Interval> merge(vector<Interval> &intervals) ;
+};
+
+void add(vector<Interval> &set, Interval &newin) {
+    if(set.empty()) {
+        set.push_back(newin);
+        return;
+    }
+    auto s = set.begin();
+    while(s!=set.end()){
+        if(s->start>newin.end){
+            set.insert(s,newin);
+            return;
+        }
+        else if(s->end < newin.start){
+            s++;
+            continue;
+        }
+        else{
+            newin.start = min(newin.start, s->start);
+            newin.end = max(newin.end, s->end);
+            s = set.erase(s);
+        }
+    }
+    set.insert(set.end(), newin);
+    return;
+}
+
+vector<Interval> Solution:: merge(vector<Interval> &intervals) {
+    
+    vector<Interval> set;
+    for (int i=0; i<intervals.size(); i++) {
+        add(set,intervals[i]);
+    }
+    return set;
+
+}
