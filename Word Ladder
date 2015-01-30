@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int ladderLength(string start, string end, unordered_set<string> &dict);
+};
+
+int Solution:: ladderLength(string start, string end, unordered_set<string> &dict) {
+    
+    queue<string> current, next;
+    unordered_set<string> visited;
+    int level = 0;
+    bool found = false;
+    
+    auto state_extend = [&](string &start){
+        vector<string> states;
+        // find next level
+        for(int i=0;i<start.size();i++){
+            for(char c='a';c<='z';c++){
+                if(start[i]!=c){
+                    swap(start[i],c);
+                    if(visited.find(start)==visited.end() && dict.find(start)!=dict.end()){
+                        states.push_back(start);
+                        visited.insert(start);
+                    }
+                    swap(start[i], c);
+                }
+            }
+        }
+        return states;
+    };
+
+    current.push(start);
+    while (!current.empty() && !found) {
+        ++level;
+        while(!current.empty() && !found){
+            string w = current.front();
+            current.pop();
+            for(auto state:state_extend(w)){
+                next.push(state);
+                if(state==end){
+                    found=true;
+                    break;
+                }
+            }
+        }
+        swap(current, next);
+    }
+    
+    if(found) return level+1;
+    else return 0;
+}
