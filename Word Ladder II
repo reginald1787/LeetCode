@@ -1,0 +1,75 @@
+class Solution {
+public:
+    vector<vector<string>> findLadders(string start, string end, unordered_set<string> &dict) ;
+};
+
+
+void gen_path(unordered_map<string, vector<string>> & father, vector<string> & path,
+              string start, string word, vector<vector<string>> & res){
+    path.push_back(word);
+    if(word==start){
+        res.push_back(path);
+        reverse(res.back().begin(), res.back().end());
+    }
+    else{
+        for(auto f:father[word]){
+            gen_path(father, path, start, f, res);
+        }
+    }
+    path.pop_back();
+}
+
+
+
+vector<vector<string>> Solution:: findLadders(string start, string end, unordered_set<string> &dict){
+    
+    unordered_set<string> current, next;
+    unordered_set<string> visited;
+    unordered_map<string, vector<string>> father;
+    bool found = false;
+
+    
+    auto state_extend = [&] (string &start){
+        unordered_set<string> states;
+        // find next level
+        for(int i=0;i<start.size();i++){
+            for(char c='a';c<='z';c++){
+                if(start[i]!=c){
+                    swap(start[i],c);
+                    if(visited.find(start)==visited.end() && dict.find(start)!=dict.end()){
+                        states.insert(start);
+                    }
+                    swap(start[i], c);
+                }
+            }
+        }
+        return states;
+    };
+    
+    
+    current.insert(start);
+    while (!current.empty() && !found) {
+        
+        // set to visited
+        for(auto word:current) visited.insert(word);
+        for(auto word:current){
+            auto next_states = state_extend(word);
+            for(auto state:next_states){
+                if(state == end) found = true;
+                next.insert(state);
+                father[state].push_back(word);
+            }
+        }
+        
+        current.clear();
+        swap(current, next);
+    }
+    
+    vector<vector<string>> res;
+    if(found){
+        vector<string> path;
+        gen_path(father, path, start, end, res);
+    }
+    
+    return res;
+}
