@@ -1,0 +1,39 @@
+class Solution {
+public:
+    double findMedianSortedArrays(int A[], int m, int B[], int n) ;
+};
+
+//Median of Two Sorted Arrays
+double find_kth(int *A, int sa, int *B, int sb, int k){
+    if (sa > sb) {
+        return find_kth(B, sb, A, sa, k);
+    }
+    if (sa == 0) {
+        return B[k-1];
+    }
+    if (k ==1){
+        return min(A[0],B[0]);
+    }
+    
+    int ea = min(k / 2, sa), eb = k - ea;
+    if (A[ea - 1] < B[eb - 1]){
+        return find_kth(A + ea, sa - ea, B, sb, k - ea);
+    }
+    else if (A[ea - 1] > B[eb - 1]){
+        return find_kth(A, sa, B + eb, sb - eb, k - eb);
+    }
+    else{
+        return  A[ea - 1];
+    }
+};
+
+double Solution::findMedianSortedArrays(int *A, int m, int *B, int n){
+    int total = m + n;
+    if (total % 2 > 0){ // total is odd
+        return find_kth(A, m, B, n, total / 2 + 1);
+    }
+    else{ // total is even
+        return (find_kth(A, m, B, n, total / 2)
+                + find_kth(A, m, B, n, total / 2 + 1)) / 2.0;
+    }
+};
