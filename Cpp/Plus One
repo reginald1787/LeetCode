@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int> &digits);
+};
+
+vector<int> Solution:: plusOne(vector<int> &digits) {
+    int carry = 1;
+    for(auto it=digits.rbegin();it!=digits.rend();it++){
+        int num = *it+carry;
+        carry = num/10;
+        *it = num%10;
+    }
+    
+    if(carry>0){
+        digits.insert(digits.begin(), carry);
+    }
+    
+    return digits;
+}
