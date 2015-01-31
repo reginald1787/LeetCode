@@ -22,7 +22,6 @@ bool Solution:: hasPathSum(TreeNode *root, int sum) {
     if(isleaf(root) && root->val==sum) return true;
     
     bool left = hasPathSum(root->left, sum-root->val);
-    if(left) return true;
     bool right = hasPathSum(root->right, sum-root->val);
-    return right;
+    return left || right;
 }
