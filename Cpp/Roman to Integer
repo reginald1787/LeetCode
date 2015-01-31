@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int romanToInt(string s);
+};
+
+int Solution::romanToInt(string s){
+    unordered_map<char, int> symbols;
+    symbols['I']=1;
+    symbols['V']=5;
+    symbols['X']=10;
+    symbols['L']=50;
+    symbols['C']=100;
+    symbols['D']=500;
+    symbols['M']=1000;
+    int num=0;
+    int i=0;
+    while(i<s.length()){
+        if(i+1<s.length()){
+            switch (s[i]) {
+                case 'I':{
+                    if(s[i+1]=='V'){num+=4;i+=2;}
+                    else if(s[i+1]=='X'){num+=9;i+=2;}
+                    else {num+=1;i+=1;}
+                    break;
+                    }
+                case 'X':{
+                    if(s[i+1]=='L'){num+=40;i+=2;}
+                    else if(s[i+1]=='C'){num+=90;i+=2;}
+                    else {num+=10;i+=1;}
+                    break;
+                    }
+                case 'C':{
+                    if(s[i+1]=='D'){num+=400;i+=2;}
+                    else if(s[i+1]=='M'){num+=900;i+=2;}
+                    else {num+=100;i+=1;}
+                    break;
+                    }
+                default:{
+                    num+=symbols[s[i]];
+                    i+=1;
+                }
+            }
+        }
+        else{
+            num+=symbols[s[i]];
+            i+=1;
+        }
+        
+    }
+    return num;
+}
+
+
