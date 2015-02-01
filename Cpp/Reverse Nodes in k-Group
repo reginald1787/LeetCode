@@ -38,7 +38,6 @@ ListNode * listReverse(ListNode * prev, int k){
 
 ListNode * Solution:: reverseKGroup(ListNode *head, int k) {
     
-    if(!head) return nullptr;
     ListNode * dummy =  new ListNode (-1);
     dummy->next = head;
     ListNode * p = dummy;
