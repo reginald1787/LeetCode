@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) ;
+};
+
+int Solution:: lengthOfLongestSubstring(string s) {
+    
+    unordered_map<char, int> visited;
+    int maxlen = 0;
+    int start = 0;
+    for(int i=0;i<s.size();i++){
+        
+        if(visited.find(s[i])!=visited.end()){
+            visited[s[i]]++;
+            maxlen = max(maxlen, i-start);
+            while(visited[s[i]]>1){
+                visited[s[start]]--;
+                start++;
+            }
+        }
+        else{
+            visited[s[i]] = 1;
+        }
+        
+    }
+    
+    maxlen = max(maxlen, int(s.size())-start);
+
+    return maxlen;
+
+}
+
+
