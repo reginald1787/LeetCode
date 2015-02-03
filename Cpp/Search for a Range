@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> searchRange(int A[], int n, int target);
+};
+
+vector<int> Solution:: searchRange(int A[], int n, int target){
+    vector<int> res;
+    
+    int s = 0, e = n-1;
+    while(s<=e){
+        int m = (s+e)/2;
+
+        if(A[m]==target){
+            int i = m;
+            while(i>=0 && A[i]==A[m]) i--;
+            res.push_back(i+1);
+            i = m;
+            while(i<n && A[i]==A[m]) i++;
+            res.push_back(i-1);
+            break;
+        }
+        else if(A[m]>target) e = m-1;
+        else s = m+1;
+    }
+    
+    if(res.empty()) res = {-1,-1};
+    return res;
+}
