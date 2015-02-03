@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<int> findSubstring(string S, vector<string> &L);
+};
+
+vector<int> Solution:: findSubstring(string S, vector<string> &L) {
+    
+    vector<int> res;
+    if(L.size()==0 || S.size()==0) return res;
+    int wordlen = L[0].size();
+    if(wordlen>S.size()) return res;
+    unordered_map<string, int> dict;
+    for(auto s:L){
+        if(dict.find(s)==dict.end()) dict[s] = 1;
+        else dict[s]++;
+    }
+
+    for(int i=0;i<wordlen;i++){
+        unordered_map<string, int> visited;
+        int count = 0;
+        int start = i;
+        for(int j=i;j<=S.size()-wordlen;j+=wordlen){
+            string tmp = S.substr(j,wordlen);
+            if(dict.find(tmp)!=dict.end()){
+                
+                if(visited.find(tmp)!=visited.end()) visited[tmp]++;
+                else visited[tmp] = 1;
+                
+                if(visited[tmp]<=dict[tmp]) count++;
+                else{
+                    while(visited[tmp]>dict[tmp]){
+                        string newtmp = S.substr(start, wordlen);
+                        if(visited.find(newtmp)!=visited.end()){
+                            visited[newtmp]--;
+                            if(visited[newtmp]<dict[newtmp]) count--;
+                        }
+                        start += wordlen;
+                    }
+                }
+                if(count==L.size()){
+                    res.push_back(start);
+                    string newtmp = S.substr(start,wordlen);
+                    if(visited.find(newtmp)!=visited.end()) visited[newtmp]--;
+                    count--;
+                    start+=wordlen;
+                }
+            }
+            else{
+                visited.clear();
+                count = 0;
+                start = j+wordlen;
+            }
+        }
+        
+    }
+    
+    
+    return res;
+}
