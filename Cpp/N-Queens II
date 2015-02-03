@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int totalNQueens(int n);
+};
+
+bool valid(unordered_map<int, int> &col, int i, int j){
+    if(col.find(j)!=col.end()) return false;
+    for(auto it = col.begin(); it!=col.end();it++){
+        if((abs(it->first-j) == abs(it->second-i))){
+            return false;
+        }
+    }
+    return true;
+}
+
+void NQ_dfs(int & totalres, unordered_map<int, int> &col, int row, int n){
+    
+    if(row>=n) {
+        if(col.size()==n){
+            //totalres.push_back(res);
+            totalres++;
+        }
+        return;
+    }
+    for(int j=0;j<n;j++){
+        if(valid(col, row, j)){
+            //res[row][j] = 'Q';
+            col[j] = row;
+            NQ_dfs(totalres, col, row+1, n);
+            col.erase(j);
+            //res[row][j] = '.';
+        }
+    }
+}
+
+
+int Solution:: totalNQueens(int n) {
+    int res = 0;
+    unordered_map<int, int> col;
+    NQ_dfs(res, col, 0, n);
+    return res;
+}
