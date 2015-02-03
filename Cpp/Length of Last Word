@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int lengthOfLastWord(const char *s);
+};
+
+int Solution:: lengthOfLastWord(const char *s) {
+    int count = 0;
+    while(*s==' ') s++;
+    while(*s!='\0' && *s!=' ') s++,count++;
+    if(*s=='\0') return count;
+    else{
+        while(*s==' ') s++;
+        if(*s=='\0') return count;
+        else return lengthOfLastWord(s);
+    }
+}
