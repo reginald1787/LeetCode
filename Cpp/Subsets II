@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<vector<int> > subsetsWithDup(vector<int> &S);
+};
+
+void subset_dfs(vector<vector<int>> &res, vector<int> &currset, vector<int> &S, int level){
+    if(level==S.size()){
+        res.push_back(currset);
+        return;
+    }
+    
+    currset.push_back(S[level]);
+    subset_dfs(res, currset, S, level+1);
+    currset.pop_back();
+    subset_dfs(res, currset, S, level+1);
+
+}
+
+vector<vector<int> > Solution:: subsetsWithDup(vector<int> &S) {
+    vector<vector<int>> res;
+    vector<int> currset;
+    sort(S.begin(), S.end());
+    subset_dfs(res, currset, S, 0);
+    sort(res.begin(), res.end());
+    res.resize(distance(res.begin(), unique(res.begin(), res.end())));
+    return res;
+}
