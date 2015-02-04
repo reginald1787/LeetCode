@@ -1,0 +1,29 @@
+class Solution {
+public:
+    string simplifyPath(string path) ;
+};
+
+string Solution:: simplifyPath(string path) {
+    vector<string>s;
+    
+    for(auto i=path.begin(); i!=path.end();){
+        ++i;
+        auto j = find(i,path.end(),'/');
+        auto w = string(i,j);
+        if(!w.empty() && w!="."){
+            if(w==".."){
+                if(!s.empty()) s.pop_back();
+            }
+            else s.push_back(w);
+        }
+        i = j;
+    }
+    
+    string res;
+    if(s.empty()) res += "/";
+    else{
+        for(auto w:s) res += "/" + w;
+    }
+    
+    return res;
+}
