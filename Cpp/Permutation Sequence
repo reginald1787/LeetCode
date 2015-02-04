@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string getPermutation(int n, int k);
+};
+
+int factorial(int n){
+    if(n<=1) return 1;
+    return n*factorial(n-1);
+}
+
+string Solution:: getPermutation(int n, int k){
+    vector<int> num;
+    for(int i=1;i<=n;i++) num.push_back(i);
+    string res = "";
+    
+    while(n>0){
+        int s = (k-1)/factorial(n-1) + 1;
+        n--;
+        k = k - (s-1)*factorial(n);
+        res += to_string(num[s-1]);
+        num.erase(num.begin()+s-1);
+    }
+    return res;
+}
+
