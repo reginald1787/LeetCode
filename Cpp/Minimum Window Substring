@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string minWindow(string S, string T) ;
+};
+
+string Solution:: minWindow(string S, string T) {
+
+    const size_t n = S.size();
+    const size_t m = T.size();
+    string res;
+    if(n==0 || m==0 || n<m) return res;
+    
+    unordered_map<char, int> dict;
+    for(auto c:T) {
+        if(dict.find(c)!=dict.end()) dict[c]++;
+        else dict[c]=1;
+    }
+    
+    int start = 0, count = 0,  minlen = INT16_MAX;
+    unordered_map<char, int> visited;
+    for(int i=0;i<n;i++){
+        
+        if(dict.find(S[i])!=dict.end()){
+            if(visited.find(S[i])!=visited.end()) visited[S[i]]++;
+            else visited[S[i]] = 1;
+            
+            if(visited[S[i]]<=dict[S[i]]) count++;
+
+            if(count==m){
+                while(dict.find(S[start])==dict.end() || visited[S[start]]>dict[S[start]]){
+                    if(visited.find(S[start])!=visited.end() && visited[S[start]]>dict[S[start]]) visited[S[start]]--;
+                    start++;
+                }
+                
+                if(i-start+1<minlen){
+                    minlen = i-start+1;
+                    res = S.substr(start, minlen);
+                }
+            
+            }
+            
+        }
+    }
+    
+    
+    return res;
+}
+
+
+
