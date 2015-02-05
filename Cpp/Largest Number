@@ -1,0 +1,22 @@
+bool compare(string a, string b){
+    
+    return a+b>b+a;
+}
+
+string Solution:: largestNumber(vector<int> &num) {
+    vector<string> S;
+    for(auto it:num){
+        S.push_back(to_string(it));
+    }
+    
+    sort(S.begin(), S.end(),compare);
+
+    
+    string s="";
+    if(S[0]=="0") return "0";
+    for(auto c:S){
+        s += c ;
+    }
+    if(s.empty()) s+="0";
+    return s;
+}
