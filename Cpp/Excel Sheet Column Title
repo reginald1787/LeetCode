@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string convertToTitle(int n) ;
+};
+
+
+string Solution:: convertToTitle(int n) {
+
+    if(n<1) return "";
+    long k=1;
+    long m=1;
+    while(n/k>=1){
+        k*=26;
+        m+=k;
+    }
+    while(m>n){
+        m-=k;
+        k/=26;
+    }
+    
+    string s;
+    while(n>0 && k>0){
+        int num = n/k;
+        if(n%k==0 && k>1) num--;
+        char c = 'A'+num-1;
+        s.push_back(c);
+        n -= num*k;
+        k /= 26;
+    }
+    
+    return s;
+}
+
