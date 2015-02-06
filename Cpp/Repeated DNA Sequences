@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) ;
+};
+
+vector<string> Solution:: findRepeatedDnaSequences(string s) {
+
+    vector<string> res;
+    if(s.size()<=10) return res;
+    
+    
+    //unsigned int currword = 0;
+    bitset<20> currword;
+    unordered_map<char, int> DNA;
+    DNA['A'] = 0;
+    DNA['T'] = 1;
+    DNA['G'] = 2;
+    DNA['C'] = 3;
+    unordered_map<bitset<20>, int> count;
+    for(int i=0;i<10;i++){
+        currword = currword<<2;
+        currword |= DNA[s[i]];
+    }
+    count[currword]=1;
+    for(int i=10;i<s.size();i++){
+        currword = currword<<2;
+        currword |= DNA[s[i]];
+        if(count.find(currword)!=count.end()) count[currword]++;
+        else count[currword]=1;
+    }
+    
+    for(auto it=count.begin();it!=count.end();it++){
+        if(it->second>1){
+            string seq = "";
+            bitset<20> num = it->first;
+            for(int i=19;i>0;i-=2){
+                if(num[i]==0 && num[i-1]==0) seq+="A";
+                if(num[i]==0 && num[i-1]==1) seq+="T";
+                if(num[i]==1 && num[i-1]==0) seq+="G";
+                if(num[i]==1 && num[i-1]==1) seq+="C";
+            }
+            res.push_back(seq);
+        }
+        
+    }
+    return res;
+}
+
