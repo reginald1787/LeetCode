@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int> > &dungeon);
+};
+
+
+int Solution:: calculateMinimumHP(vector<vector<int> > &dungeon) {
+
+    const size_t n = dungeon.size();
+    const size_t m = dungeon[0].size();
+    vector<vector<int>> HP (n, vector<int> (m, 0));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            HP[i][j] = dungeon[i][j]>=0?1:1-dungeon[i][j];
+        }
+    }
+    
+    for(int i=n-2;i>=0;i--){
+        int val = HP[i][m-1]+dungeon[i][m-1];
+        if(val<HP[i+1][m-1]) HP[i][m-1] = HP[i+1][m-1] - dungeon[i][m-1] ;
+    }
+    
+    for(int i=m-2;i>=0;i--){
+        int val = HP[n-1][i]+dungeon[n-1][i];
+        if(val<HP[n-1][i+1]) HP[n-1][i] = HP[n-1][i+1] - dungeon[n-1][i] ;
+    }
+    
+
+    
+    for(int i=n-2;i>=0;i--){
+        for(int j=m-2;j>=0;j--){
+            int val = HP[i][j] + dungeon[i][j];
+            if(val<min(HP[i][j+1], HP[i+1][j])){
+                HP[i][j] = min(HP[i+1][j], HP[i][j+1]) - dungeon[i][j];
+            }
+        }
+    }
+    
+    
+    
+    return HP[0][0];
+}
