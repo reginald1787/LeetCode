@@ -1,0 +1,46 @@
+class Solution {
+public:
+    string fractionToDecimal(int numerator, int denominator);
+};
+
+
+string Solution:: fractionToDecimal(int numerator, int denominator) {
+    if(numerator==0) return "0";
+    
+    string res;
+    
+    bool positive = (numerator>0 && denominator>0) || (numerator<0 && denominator <0);
+    
+    long long n = numerator>=0?numerator:-(long long) numerator;
+    long long d = denominator>=0?denominator:-(long long) denominator;
+    
+    
+    
+    while(n>=d){
+        res += to_string(n/d);
+        n %= d;
+    }
+    
+    if(res.empty()) res = "0";
+    if(!positive) res.insert(0, "-");
+    
+    if(n==0) return res;
+    res += ".";
+    unordered_map<int, int> repeat;
+    size_t index = res.size();
+    
+    while(n>0){
+        if(repeat.find(n)!=repeat.end()) break;
+        repeat[n] = index++;
+        n*=10;
+        res += to_string(n/d);
+        n %= d;
+
+    }
+    
+    if(n==0) return res;
+    res.insert(repeat[n], "(");
+    res+=")";
+    return res;
+    
+}
