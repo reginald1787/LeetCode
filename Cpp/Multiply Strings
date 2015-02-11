@@ -1,53 +1,28 @@
 class Solution {
 public:
-    string multiply(string num1, string num2);
-    string add(string s1, string s2);
+    string multiply(string num1, string num2) ;
 };
-
-string Solution:: add(string s1, string s2){
-    string ns = "";
-    //reverse(s1.begin(), s1.end());
-    //reverse(s2.begin(), s2.end());
-    int carry = 0;
-
-    for(int i=0;i<max(s1.size(),s2.size());i++){
-        int num1 = i<s1.size()?s1[i]-'0':0;
-        int num2 = i<s2.size()?s2[i]-'0':0;
-        int val = num1+num2+carry;
-        carry = val/10;
-        ns+= to_string(val%10);
-    }
-    
-    if(carry>0) ns+=to_string(carry);
-    //reverse(ns.begin(), ns.end());
-    return ns;
-}
 
 string Solution:: multiply(string num1, string num2) {
 
     if(num1.empty() || num2.empty()) return "";
+    if(num1[0]=='0' || num2[0]=='0') return "0";
     
-    if(num1.size()<num2.size()) return multiply(num2, num1);
-        
-    if(num2.size()==1 && num2[0]=='0') return "0";
-
-    string res;
-    int carry;
-    for(int i=num2.size()-1;i>=0;i--){
-        string tmp = "";
-        carry = 0;
-        for(int j=num1.size()-1;j>=0;j--){
-            int val = (num1[j]-'0') * (num2[i]-'0') + carry;
-            carry = val/10;
-            tmp+=to_string(val%10);
+    vector<int> res(num1.size()+num2.size());
+    for(int i=num1.size()-1;i>=0;i--){
+        for(int j=num2.size()-1;j>=0;j--){
+            int val = int (num1[i]-'0') * int (num2[j]-'0');
+            res[i+j+1] += val;
+            res[i+j] += res[i+j+1] /10;
+            res[i+j+1] %=10;
         }
-        if(carry>0) tmp+=to_string(carry);
-        tmp = string(num2.size()-1-i, '0') + tmp;
-        res = add(res, tmp);
     }
     
-    reverse(res.begin(),res.end());
+    string s;
+    int i=0;
+    while(i<res.size() && res[i]==0) i++;
     
-    return res;
+    for(int j=i;j<res.size();j++) s+=to_string(res[j]);
+    
+    return s;
 }
-
