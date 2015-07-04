@@ -1,0 +1,66 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+
+/* recursive method */
+
+public class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if(root!=null){
+            if(root.left==null && root.right==null){
+                return root;
+            }
+            if(root.left!=null){
+                TreeNode temp = root.left;
+                root.left = invertTree(root.right);
+                root.right = invertTree(temp);
+            }
+            else{
+                root.left = invertTree(root.right);
+                root.right = null;
+            }
+        }
+        return root;
+    }
+}
+
+
+/* iterative method */
+
+public class Solution {
+    public boolean isLeaf(TreeNode root){
+        if(root.left==null && root.right==null) return true;
+        else return false;
+    }
+    
+    public TreeNode invertTree(TreeNode root) {
+        if(root!=null){
+            LinkedList<TreeNode> nodes = new LinkedList<>();
+            nodes.add(root);
+            while(!nodes.isEmpty()){
+                TreeNode currnode = nodes.remove();
+                if(isLeaf(currnode)) continue;
+                if(currnode.left!=null) nodes.add(currnode.left);
+                if(currnode.right!=null) nodes.add(currnode.right);
+            
+                if(currnode.left!=null){
+                    TreeNode temp = currnode.left;
+                    currnode.left = currnode.right;
+                    currnode.right = temp;
+                }
+                else{
+                    currnode.left = currnode.right;
+                    currnode.right = null;
+                }
+            }
+        }
+        return root;
+    }
+}
