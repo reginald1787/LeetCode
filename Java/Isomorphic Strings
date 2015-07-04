@@ -1,0 +1,19 @@
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        int [] map = new int [129];
+        Set<Integer> mapset =  new HashSet<Integer>();
+        for(int i=0;i<s.length();i++){
+            int left = (int) s.charAt(i) + 1;
+            int right = (int) t.charAt(i) + 1;
+            if(map[left]!=0 && map[left]!=right) return false;
+            if(map[left]==0){
+                if(mapset.contains(right)) return false;
+                else {
+                    map[left]=right;
+                    mapset.add(right);
+                }
+            }
+        }
+        return true;
+    }
+}
