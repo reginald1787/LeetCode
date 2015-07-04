@@ -1,5 +1,20 @@
 public class Solution {
     public List<String> summaryRanges(int[] nums) {
+        List<String> ranges = new ArrayList<>();
+        int i=0;
+        while(i < nums.length){
+            String start = Integer.toString(nums[i]);
+            int j = i+1;
+            while(j<nums.length && nums[j] == nums[j-1]+1) j++;
+            if(j>i+1){ 
+                ranges.add(start+"->"+Integer.toString(nums[j-1]));
+            }
+            else{ 
+                ranges.add(start);
+            }
+            i = j;
+        } 
         
+        return ranges;
     }
 }
