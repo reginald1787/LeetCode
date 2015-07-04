@@ -1,0 +1,16 @@
+public class Solution {
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        if(A>E) return computeArea(E,F,G,H,A,B,C,D);
+        int total = (C-A)*(D-B) + (G-E)*(H-F);
+        if(B>=H || D<=F || C<=E){
+            return total;
+        }
+        
+        int lcX = E;
+        int lcY = B>F?B:F;
+        int trX = C<G?C:G;
+        int trY = D<H?D:H;
+        
+        return total-(trX-lcX)*(trY-lcY);
+    }
+}
