@@ -1,0 +1,37 @@
+public class Solution {
+    public int rob(int[] nums) {
+        if(nums.length <=0) return 0;
+        if(nums.length==1) return nums[0];
+        int prepre,pre;
+        boolean robbed;
+        prepre = nums[0];
+        if(nums[0]>nums[1]){
+            pre = nums[0];
+            robbed = false;
+        }
+        else{
+            pre = nums[1];
+            robbed = true;
+        }
+        int curr = pre;
+        for(int i=2;i<nums.length;i++){
+            if(robbed){
+                if(pre>prepre+nums[i]){
+                    curr = pre;
+                    robbed = false;
+                }
+                else{
+                    curr = prepre+nums[i];
+                    robbed = true;
+                }
+            }
+            else{
+                curr = pre + nums[i];
+                robbed = true;
+            }
+            prepre = pre;
+            pre = curr;
+        }
+        return curr;
+    }
+}
