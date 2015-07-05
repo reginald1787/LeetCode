@@ -1,0 +1,21 @@
+public class Solution {
+    public int change(int n){
+        int newn = 0;
+        while(n>0){
+            int d = n%10;
+            newn += d*d;
+            n = n/10;
+        }
+        return newn;
+    }
+    
+    public boolean isHappy(int n) {
+        Set<Integer> set = new HashSet<Integer>();
+        while(n!=1){
+            if(set.contains(n)) return false;
+            set.add(n);
+            n = change(n);
+        }
+        return true;
+    }
+}
