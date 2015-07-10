@@ -1,0 +1,34 @@
+class MyStack {
+    
+    List<Integer> s1 = new ArrayList<Integer>();
+    List<Integer> s2 = new ArrayList<Integer>();
+    int top;
+    
+    
+    // Push element x onto stack.
+    public void push(int x) {
+        s1.add(x);
+        top = x;
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        while(s1.size()>1) {
+            top = s1.remove(0);
+            s2.add(top);
+        }
+        s1.clear();
+        s1.addAll(s2);
+        s2.clear();
+    }
+
+    // Get the top element.
+    public int top() {
+        return top;
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return s1.isEmpty() && s2.isEmpty();
+    }
+}
