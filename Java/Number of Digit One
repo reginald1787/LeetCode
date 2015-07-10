@@ -1,0 +1,23 @@
+public class Solution {
+    
+    private int num9(int n){
+        //1-9 -> 1
+        //1-99 -> 10*1 + 10 = 20
+        //1-999 -> 10*20 + 100 = 300
+        //.....
+            return n * (int) Math.pow(10,n-1);
+        }
+        
+    public int countDigitOne(int n) {
+        
+        if(n<=0) return 0;
+        if(n<10) return 1;
+        int k = (int) Math.log10(n);
+        int d = (int) Math.pow(10,k);
+        int a = n/d;
+        n %= d;
+        int c = a>1?(int) Math.pow(10,k):(n+1);
+        return a*num9(k) + c + countDigitOne(n);
+        
+    }
+}
