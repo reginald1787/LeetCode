@@ -1,0 +1,39 @@
+public class Solution {
+    
+    private boolean check(int[] nums, int c){
+        int count = 0;
+        for(int i=0;i<nums.length;i++){
+            if(c==nums[i]) count++;
+        }
+        return count>nums.length/3;
+    }
+    
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> res =  new ArrayList<Integer>();
+        if(nums.length < 1) return res;
+        int c1 = 0, c2 = 0;
+        int n1 = 0, n2 = 0;
+        for(int i=0;i<nums.length;i++){
+            if(n1==0) {
+                c1 = nums[i];
+                n1=1;
+            }
+            else if(c1==nums[i]) n1++;
+            else {
+                if(n2==0) {
+                    c2 = nums[i];
+                    n2=1;
+                }
+                else if(c2==nums[i]) n2++;
+                else {
+                    n1--;
+                    n2--;
+                }
+            }
+        }
+       
+        if(check(nums,c1)) res.add(c1);
+        if(c1!=c2 && check(nums,c2)) res.add(c2);
+        return res;
+    }
+}
