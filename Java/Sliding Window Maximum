@@ -1,0 +1,21 @@
+public class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if(nums.length<1) return nums;
+        PriorityQueue<Integer> maxPQ = new PriorityQueue<Integer>(k,Collections.reverseOrder());
+        int i=0,j=0;
+        while(j<k){
+            maxPQ.add(nums[j]);
+            j++;
+        }
+        int [] res =  new int[nums.length-k+1];
+        while(j<nums.length){
+            res[i] = maxPQ.peek();
+            maxPQ.remove(nums[i]);
+            maxPQ.add(nums[j]);
+            i++;
+            j++;
+        }
+        res[i] = maxPQ.peek();
+        return res;
+    }
+}
