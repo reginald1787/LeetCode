@@ -1,0 +1,28 @@
+public class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        int windowStart = 0;
+        int windowEnd = 0;
+        if(nums.length<1) return 0;
+        int minlen = nums.length, currsum = 0, currlen = 0;
+        while(windowEnd < nums.length){
+            currlen++;
+            currsum += nums[windowEnd];
+            windowEnd++;
+            while(currsum >= s){
+                minlen = Math.min(minlen, currlen);
+                currsum -= nums[windowStart];
+                windowStart++;
+                currlen--;
+            }
+        }
+        
+        while(currsum >= s){
+            minlen = Math.min(minlen, currlen);
+            currsum -= nums[windowStart];
+            windowStart++;
+            currlen--;
+        }
+        
+        return minlen==nums.length?0:minlen;
+    }
+}
