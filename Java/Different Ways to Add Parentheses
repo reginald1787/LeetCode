@@ -1,0 +1,52 @@
+public class Solution {
+    
+    private int compute(int a, int b, char ops){
+        switch(ops){
+            case '+': return a+b;
+            case '-': return a-b;
+            case '*': return a*b;
+        }
+        return 0;
+    }
+    
+    private List<Integer> computeList(List<Integer> val, List<Character> ops){
+        List<Integer> res = new ArrayList<>();
+        if(val.size()==1) {
+            res.add(val.get(0));
+            return res;
+        }
+        if(val.size()==2){
+            res.add(compute(val.get(0),val.get(1),ops.get(0)));
+            return res;
+        }
+        List<Integer> front, end;
+        for(int i=0;i<val.size()-1;i++){
+            front = computeList(val.subList(0,i+1),ops.subList(0,i));
+            if(i<ops.size()-1) end = computeList(val.subList(i+1,val.size()),ops.subList(i+1,ops.size()));
+            else end = val.subList(i+1,val.size());
+            for(int f:front){
+                for(int e:end){
+                    res.add(compute(f,e,ops.get(i)));
+                }
+            }
+        }
+        return res;
+    }
+    
+    public List<Integer> diffWaysToCompute(String input) {
+        List<Integer> val =  new ArrayList<>();
+        List<Character> ops =  new ArrayList<>();
+        int num = 0;
+        for(int i=0;i<input.length();i++){
+            char c = input.charAt(i);
+            if(c=='+' || c=='-' || c=='*') {
+                if(i>0) val.add(num);
+                ops.add(c);
+                num = 0;
+            }
+            else num = 10*num + (int) c-'0';
+        }
+        val.add(num);
+        return computeList(val,ops);
+    }
+}
