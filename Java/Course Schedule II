@@ -1,0 +1,38 @@
+public class Solution {
+    
+     private boolean visit(int node, int [] marks, List<List<Integer>> edge, LinkedList<Integer> L){
+            if(marks[node]==1){
+                return false;
+            }
+            if(marks[node]==0){
+                marks[node] = 1;
+                boolean DAG = true;
+                for(int m:edge.get(node)) {
+                    DAG &= visit(m,marks,edge,L);
+                    if(!DAG) return false;
+                }
+                marks[node] = 2;
+                L.addFirst(node);
+            }
+            return true;
+     }
+                
+    
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        LinkedList<Integer> L =  new LinkedList<>();
+        int [] marks = new int[numCourses];
+        List<List<Integer>> edge =  new ArrayList<>();
+        for(int i=0;i<numCourses;i++) edge.add(new ArrayList<Integer>());
+        for(int i=0;i<prerequisites.length;i++){
+            int key = prerequisites[i][1]; 
+            edge.get(key).add(prerequisites[i][0]);
+        }
+        boolean DAG = true;
+        for(int i=0;i<numCourses;i++) {
+            DAG &= visit(i,marks,edge,L);
+            if(!DAG) return new int[0];
+        }
+        for(int i=0;i<numCourses;i++) marks[i] = L.get(i);
+        return marks;
+    }
+}
