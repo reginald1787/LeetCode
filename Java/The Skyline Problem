@@ -1,0 +1,77 @@
+public class Solution {
+     
+     private List<int[]> addTwo(int[] A, int [] B){
+         int x1 = A[0],x2 = B[0];
+         int y1 = A[1],y2 = B[1];
+         int h1 = A[2],h2 = B[2];
+         if(x1>x2) return addTwo(B,A);
+         List<int[]> res = new ArrayList<>();
+         if(y1<=x2){
+             res.add(A);
+             res.add(B);
+             return res;
+         }
+         if(y1<=y2){
+             if(h1==h2) {
+                res.add(new int[]{x1,y2,h1});
+             }
+            else if(h1<h2){
+                if(x2-x1>0) res.add(new int[]{x1,x2,h1});
+                res.add(new int[]{x2,y2,h2});
+            }
+            else if(h1>h2){
+                res.add(new int[]{x1,y1,h1});
+                if(y2-y1>0) res.add(new int[]{y1,y2,h2});
+            }
+         }
+         else{
+             if(h1==h2) {
+                res.add(new int[]{x1,y1,h1});
+             }
+            else if(h1<h2){
+                if(x2-x1>0) res.add(new int[]{x1,x2,h1});
+                res.add(new int[]{x2,y2,h2});
+                res.add(new int[]{y2,y1,h1});
+            }
+            else if(h1>h2){
+                res.add(new int[]{x1,y1,h1});
+            }
+         }
+         return res;
+     }
+     
+     private void addSkyline(List<int[]> skyline, int[] building){
+        if(building.length!=3) return;
+        int n = skyline.size();
+        if( (n<1) || (skyline.get(n-1)[1] <= building[0])) {
+            skyline.add(building);
+            return;
+        }
+        List<int[]> tail = addTwo(skyline.remove(n-1),building);
+        for(int[] e:tail) addSkyline(skyline,e);
+    }
+        
+    public List<int[]> getSkyline(int[][] buildings) {
+        List<int[]> skyline =  new ArrayList<>();
+        for(int i=0;i<buildings.length;i++){
+            addSkyline(skyline,buildings[i]);
+        }
+        List<int[]> res = new ArrayList<>();
+        for(int i=0;i<skyline.size();i++){
+            int [] e = skyline.get(i);
+            if(i==0) res.add(new int[]{e[0],e[2]});
+            else{
+                int [] ee = skyline.get(i-1);
+                if(ee[1]<e[0]) {
+                    res.add(new int[]{ee[1],0});
+                    res.add(new int[]{e[0],e[2]});
+                }
+                else{
+                    if(ee[2]!=e[2]) res.add(new int[]{e[0],e[2]});
+                }
+            }
+        }
+        if(!skyline.isEmpty()) res.add(new int[]{skyline.get(skyline.size()-1)[1],0});
+        return res;
+    }
+}
